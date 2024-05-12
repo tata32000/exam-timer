@@ -1,5 +1,11 @@
 import { useEffect } from "react";
 
+const pad = (num: number, size: number): string => {
+  let s = num + "";
+  while (s.length < size) s = "0" + s;
+  return s;
+};
+
 const Keypad = ({
   hour,
   minute,
@@ -48,6 +54,7 @@ const Keypad = ({
     setPrevSecond(prevSecond);
     setCurPos("None");
     setTimeSet(true);
+    document.title = `${pad(hour, 2)}:${pad(minute, 2)}:${pad(second, 2)}`;
   };
   const clearTimer = () => {
     setHour(0);

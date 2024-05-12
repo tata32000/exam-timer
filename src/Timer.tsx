@@ -17,6 +17,11 @@ const Timer = () => {
   const [prevHour, setPrevHour] = useState(0);
   const [prevMinute, setPrevMinute] = useState(0);
   const [prevSecond, setPrevSecond] = useState(0);
+  const [isDone, setIsDone] = useState(false);
+  const [bgRed, setBgRed] = useState(false);
+  const [isNotified, setIsNotified] = useState(false);
+
+  Notification.requestPermission();
 
   const buttonStyle = (position: string) => {
     return `text-4xl md:text-6xl lg:text-8xl xl:text-9xl bg-transparent border-none outline-none cursor-pointer ${
@@ -25,6 +30,9 @@ const Timer = () => {
   };
 
   const handleStartStop = () => {
+    if (isDone) {
+      return;
+    }
     if (isRunning) {
       setIsRunning(false);
       return;
@@ -39,6 +47,8 @@ const Timer = () => {
     setHour(prevHour);
     setMinute(prevMinute);
     setSecond(prevSecond);
+    setBgRed(false);
+    setIsDone(false);
   };
 
   useEffect(() => {
@@ -56,11 +66,27 @@ const Timer = () => {
           setHour(hour - 1);
         } else {
           setIsRunning(false);
+          setIsDone(true);
         }
       }, 1000);
+      document.title = `${pad(hour, 2)}:${pad(minute, 2)}:${pad(second, 2)}`;
+      return () => clearInterval(timer);
     }
-    return () => clearInterval(timer);
-  }, [isRunning, hour, minute, second]);
+    if (isDone) {
+      if (!isNotified) {
+        const audio = new Audio("src/assets/alarm.mp3");
+        audio.play();
+        new Notification("Timer Done");
+        setIsNotified(true);
+      }
+      timer = setInterval(() => {
+        setBgRed(!bgRed);
+      }, 500);
+      return () => {
+        clearInterval(timer);
+      };
+    }
+  }, [isRunning, hour, minute, second, isDone, bgRed, isNotified]);
 
   return (
     <div className="flex items-center justify-center h-screen">
@@ -71,7 +97,11 @@ const Timer = () => {
         >
           Timer
         </button>
-        <div className="flex items-center justify-center box-border border-2 p-4 border-black rounded-lg bg-slate-100">
+        <div
+          className={`flex items-center justify-center box-border border-2 p-4 border-black rounded-lg ${
+            bgRed ? "bg-red-400" : "bg-slate-100"
+          }`}
+        >
           <div className="flex">
             <button
               className={buttonStyle("hour")}
