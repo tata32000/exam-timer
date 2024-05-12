@@ -38,6 +38,7 @@ const Timer = () => {
       return;
     }
     setIsRunning(true);
+    setIsNotified(false);
   };
 
   const handleClear = () => {
