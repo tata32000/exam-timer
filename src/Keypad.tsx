@@ -33,6 +33,20 @@ const Keypad = ({
   setPrevMinute: (prevMinute: number) => void;
   setPrevSecond: (prevSecond: number) => void;
 }) => {
+  const handleTimeClick = (time: number) => {
+    setSecond(0);
+    setMinute(0);
+    setHour(0);
+    if (time === 30) {
+      setMinute(30);
+    } else if (time === 60) {
+      setHour(1);
+      setMinute(0);
+    } else if (time === 90) {
+      setHour(1);
+      setMinute(30);
+    }
+  };
   const handleSetClick = () => {
     let prevHour = hour;
     let prevMinute = minute;
@@ -145,6 +159,28 @@ const Keypad = ({
               {num + 5}
             </button>
           ))}
+        </div>
+      </div>
+      <div className="flex justify-center mt-2">
+        <div className="flex flex-wrap">
+          <button
+            className="m-1 p-4 bg-gray-200 text-lg md:text-xl lg:text-2xl xl:text-3xl rounded-md"
+            onClick={() => handleTimeClick(30)}
+          >
+            30mins
+          </button>
+          <button
+            className="m-1 p-4 bg-gray-200 text-lg md:text-xl lg:text-2xl xl:text-3xl rounded-md"
+            onClick={() => handleTimeClick(60)}
+          >
+            60mins
+          </button>
+          <button
+            className="m-1 p-4 bg-gray-200 text-lg md:text-xl lg:text-2xl xl:text-3xl rounded-md"
+            onClick={() => handleTimeClick(90)}
+          >
+            90mins
+          </button>
         </div>
       </div>
       <div className="flex justify-center mt-2">

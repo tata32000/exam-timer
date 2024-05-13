@@ -30,6 +30,9 @@ const Timer = () => {
   };
 
   const handleStartStop = () => {
+    if (hour === 0 && minute === 0 && second === 0) {
+      return;
+    }
     if (isDone) {
       return;
     }
@@ -40,6 +43,16 @@ const Timer = () => {
     setIsRunning(true);
     setIsNotified(false);
   };
+
+  const handleHome = () => {
+    setIsRunning(false);
+    setIsDone(false);
+    setBgRed(false);
+    setTimeSet(false);
+    setHour(0);
+    setMinute(0);
+    setSecond(0);
+  }
 
   const handleClear = () => {
     if (isRunning) {
@@ -94,7 +107,7 @@ const Timer = () => {
       <div>
         <button
           className="block mx-auto text-center text-4xl md:text-6xl lg:text-8xl xl:text-9xl bg-transparent border-none outline-none cursor-pointer"
-          onClick={() => setTimeSet(false)}
+          onClick={handleHome}
         >
           Timer
         </button>
