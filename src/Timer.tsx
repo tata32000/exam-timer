@@ -75,7 +75,7 @@ const Timer = () => {
     }
     if (isDone) {
       if (!isNotified) {
-        const audio = new Audio("src/assets/alarm.mp3");
+        const audio = new Audio("/alarm.mp3");
         audio.play();
         new Notification("Timer Done");
         setIsNotified(true);
