@@ -21,7 +21,9 @@ const Timer = () => {
   const [bgRed, setBgRed] = useState(false);
   const [isNotified, setIsNotified] = useState(false);
 
-  Notification.requestPermission();
+  if (("Notification" in window)) {
+    Notification.requestPermission();
+  }
 
   const buttonStyle = (position: string) => {
     return `text-4xl md:text-6xl lg:text-8xl xl:text-9xl bg-transparent border-none outline-none cursor-pointer ${
