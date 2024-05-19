@@ -92,7 +92,9 @@ const Timer = () => {
       if (!isNotified) {
         const audio = new Audio("/alarm.mp3");
         audio.play();
-        new Notification("Timer Done");
+        if (("Notification" in window) && Notification.permission === "granted") {
+          new Notification("Timer Done");
+        }
         setIsNotified(true);
       }
       timer = setInterval(() => {
